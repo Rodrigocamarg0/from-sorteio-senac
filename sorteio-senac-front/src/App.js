@@ -1,20 +1,27 @@
 import './App.css';
-import Navbar from './components/Navbar';
-import Alert from './components/Alert';
-import Container from './components/Container';
-import ModalNovoUsuario from './components/ModalNovoUsuario';
-import Footer from './components/Footer';
+import React, { useEffect, useState } from 'react';
+import Card from './components/Card';
+import BtnCadastro from './components/Cadastro';
+const App = () => {
+  const [records, setRecords] = useState([]);
 
-function App() {
+  useEffect(() => {
+    fetch('https://sorteio-solidario-senacrs.onrender.com/api/usuario/listar/tudo')
+      .then((response) => response.json())
+      .then((data) => setRecords(data))
+  }, []);
+
   return (
-    <>
-      <Navbar />
-      <Alert />
-      <Container />
-      <ModalNovoUsuario />
-      <Footer />
-    </>
+    <div className="App">
+      <h1>Lista de Usuarios</h1>
+      <div className="card-container">
+        {records.map((record) => (
+          <Card key={record.id} record={record} />
+        ))}
+      </div>
+      <BtnCadastro></BtnCadastro>
+    </div>
   );
-}
+};
 
 export default App;
